@@ -65,7 +65,7 @@ src/
 ## 📬 Contacto
 
 ¿Te gustaría contactarme?  
-Puedes encontrarme en [LinkedIn]([https://linkedin.com/in/tu-usuario](https://www.linkedin.com/in/jonatan-laureano-alfaro-bb41682b4/)) o escribir a jonatandlau@gmail.com.
+Puedes encontrarme en [LinkedIn](https://www.linkedin.com/in/jonatan-laureano-alfaro-bb41682b4/) o escribir a jonatandlau@gmail.com.
 
 ---
 
