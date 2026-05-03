@@ -2,29 +2,48 @@ import { FaUserCheck } from "react-icons/fa";
 
 const AboutPage = () => {
   return (
-    <section id="about" className="pt-10 pb-10 flex-col text-white bg-[#0a0a1a] overflow-hidden">
-      <div className="max-w-4xl w-full mx-auto px-4 flex flex-col md:flex-row items-center md:items-start justify-between text-center md:text-left">
-        <div className="text-left md:w-2/3">
-          <div className="flex items-center gap-2 mb-4  md:justify-start">
-            <FaUserCheck className="text-white text-3xl" />
-            <h2 className="text-4xl font-bold">Sobre mí</h2>
-          </div>
-          <p className="text-lg mb-4">
-            Soy <span className="font-bold text-yellow-400">Jonatan, Desarrollador Front-end</span> con más de <span className="font-bold text-yellow-400">1 año de experiencia</span> en la construcción de interfaces intuitivas y optimizadas. Me especializo en el <span className="font-bold text-yellow-400">desarrollo de aplicaciones web responsivas</span> y la <span className="font-bold text-yellow-400">mejora del rendimiento</span>, asegurando una experiencia de usuario atractiva.
-          </p>
-          <p className="text-lg mb-4">
-            🚀 Me apasiona la <span className="font-bold text-yellow-400">innovación en el desarrollo web</span>, el <span className="font-bold text-yellow-400">trabajo en equipo</span> y la <span className="font-bold text-yellow-400">creación de soluciones digitales escalables</span>. Cuento con habilidades en <span className="font-bold text-yellow-400">comunicación, liderazgo, resolución de problemas y adaptabilidad</span>, lo que me permite aportar valor en proyectos desafiantes.
-          </p>
-        </div>
+    <section
+      id="about"
+      className="pt-16 pb-20 text-white bg-[#0a0a1a] overflow-hidden"
+    >
+      <div className="max-w-4xl w-full mx-auto px-6 md:px-8">
 
-        <div className="mt-6 md:mt-20 md:w-1/3 flex justify-center md:justify-end">
-          <img
-            src="/img/jonatan.jpg"
-            alt="Foto de Jonatan"
-            width={200}
-            height={200}
-            className="rounded-lg shadow-lg border-4 border-white-500 p-1"
-          />
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-10">
+
+          <div className="order-first md:order-last md:flex-shrink-0 flex justify-center">
+            <div className="relative w-52 h-64 sm:w-60 sm:h-72 md:w-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl border border-gray-700/60 ring-1 ring-white/5">
+              <img
+                src="/img/jonatan.jpg"
+                alt="Foto de Jonatan Laureano"
+                className="w-full h-full object-cover object-[center_15%]"
+              />
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[#0a0a1a]/60 to-transparent" />
+            </div>
+          </div>
+
+          <div className="flex-1 text-center md:text-left">
+            <div className="flex items-center justify-center md:justify-start gap-3 mb-6">
+              <FaUserCheck className="text-blue-400 text-3xl flex-shrink-0" />
+              <h2 className="text-3xl font-bold">Sobre mí</h2>
+            </div>
+
+            <p className="text-gray-300 text-base leading-relaxed mb-4">
+              Soy <span className="font-bold text-white">Jonatan Laureano</span>, Desarrollador
+              Front-end con más de{" "}
+              <span className="font-bold text-blue-400">1 año de experiencia</span> construyendo
+              interfaces para productos digitales de escala real. Actualmente trabajo en{" "}
+              <span className="font-bold text-blue-400">BBVA a través de Entelgy</span>, donde
+              desarrollo Web Components con Lit para el Design System Cells.
+            </p>
+
+            <p className="text-gray-300 text-base leading-relaxed">
+              Me especializo en crear componentes reutilizables, optimizar la experiencia de
+              usuario y garantizar la calidad del código mediante pruebas unitarias. Me apasiona
+              el trabajo en equipo, la mejora continua y la construcción de soluciones digitales
+              que impactan a millones de personas.
+            </p>
+          </div>
+
         </div>
       </div>
     </section>

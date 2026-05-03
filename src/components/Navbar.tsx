@@ -1,25 +1,28 @@
-const Navbar = () => {
-  return (
-    <nav className="fixed top-0 w-full bg-[#0a0a1a] backdrop-blur-md text-white p-4 shadow-md">
-      <ul className="flex justify-center gap-6 text-sm">
-        <li>
-          <a href="#experience" className="text-gray-400 hover:text-blue-400 transition">
-            Experiencia
+const navItems = [
+  { href: "#experience", label: "Experiencia" },
+  { href: "#skills", label: "Skills" },
+  { href: "#projects", label: "Proyectos" },
+  { href: "#about", label: "Sobre mí" },
+];
+
+const linkClass =
+  "text-gray-400 hover:text-blue-400 transition-colors duration-200";
+
+const Navbar = () => (
+  <nav
+    className="fixed top-0 w-full bg-[#0a0a1a]/90 backdrop-blur-md text-white py-5 px-8 shadow-md z-50"
+    aria-label="Navegación principal"
+  >
+    <ul className="flex justify-center gap-10 text-base font-medium">
+      {navItems.map(({ href, label }) => (
+        <li key={href}>
+          <a href={href} className={linkClass}>
+            {label}
           </a>
         </li>
-        <li>
-          <a href="#projects" className="text-gray-400 hover:text-blue-400 transition">
-            Proyectos
-          </a>
-        </li>
-        <li>
-          <a href="#about" className="text-gray-400 hover:text-blue-400 transition">
-            Sobre mí
-          </a>
-        </li>
-      </ul>
-    </nav>
-  );
-};
+      ))}
+    </ul>
+  </nav>
+);
 
 export default Navbar;
