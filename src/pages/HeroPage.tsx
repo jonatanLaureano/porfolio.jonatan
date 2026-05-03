@@ -136,7 +136,7 @@ const HeroPage = () => {
             <span className="font-semibold text-white">Design System Cells</span> de{" "}
             <span className="font-semibold text-blue-400">BBVA</span>, con más de{" "}
             <span className="font-semibold text-white">1 año construyendo interfaces de banca digital en producción</span>.
-            Egresado de Ingeniería de Sistemas y actualmente especializándome en{" "}
+            Bachiller en Ingeniería de Sistemas y actualmente especializándome en{" "}
             <span className="font-semibold text-white">Arquitectura de Software</span> e{" "}
             <span className="font-semibold text-white">Inteligencia Artificial generativa</span>.
           </p>
