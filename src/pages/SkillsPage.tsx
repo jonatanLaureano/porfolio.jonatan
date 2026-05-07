@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   SiTailwindcss,
   SiLit,
-  SiFigma,
   SiGit,
   SiVite,
   SiHtml5,
@@ -10,11 +9,12 @@ import {
   SiJavascript,
   SiTypescript,
   SiPython,
-  SiSass,
   SiCplusplus,
   SiBootstrap,
+  SiGitlab,
+  SiFigma,
 } from "react-icons/si";
-import { FaReact, FaCode, FaJava, FaNode } from "react-icons/fa";
+import { FaReact, FaCode, FaJava, FaNode, FaLinux, FaGithub, FaBitbucket, FaSass } from "react-icons/fa";
 import type { JSX } from "react";
 
 interface Skill {
@@ -38,6 +38,9 @@ const skillCategories: SkillCategory[] = [
       { name: "HTML5", icon: <SiHtml5 />, level: "Avanzado", brandColor: "#E34F26" },
       { name: "CSS3", icon: <SiCss3 />, level: "Avanzado", brandColor: "#1572B6" },
       { name: "React", icon: <FaReact />, level: "Avanzado", brandColor: "#61DAFB" },
+      { name: "Node.js", icon: <FaNode />, level: "Intermedio", brandColor: "#339933" },
+      { name: "Git", icon: <SiGit />, level: "Avanzado", brandColor: "#F05032" },
+      { name: "Linux", icon: <FaLinux />, level: "Intermedio", brandColor: "#FCC624" },
       { name: "Python", icon: <SiPython />, level: "Intermedio", brandColor: "#3776AB" },
       { name: "Java", icon: <FaJava />, level: "Intermedio", brandColor: "#ED8B00" },
       { name: "C++", icon: <SiCplusplus />, level: "Intermedio", brandColor: "#00599C" },
@@ -51,15 +54,21 @@ const skillCategories: SkillCategory[] = [
     ],
   },
   {
-    category: "Herramientas & Estilos",
+    category: "Frameworks & Diseño",
     skills: [
       { name: "Tailwind CSS", icon: <SiTailwindcss />, level: "Avanzado", brandColor: "#06B6D4" },
-      { name: "SCSS", icon: <SiSass />, level: "Avanzado", brandColor: "#CC6699" },
+      { name: "SCSS", icon: <FaSass />, level: "Avanzado", brandColor: "#CC6699" },
       { name: "Bootstrap", icon: <SiBootstrap />, level: "Avanzado", brandColor: "#7952B3" },
-      { name: "Git", icon: <SiGit />, level: "Avanzado", brandColor: "#F05032" },
       { name: "Vite", icon: <SiVite />, level: "Intermedio", brandColor: "#646CFF" },
-      { name: "Node.js", icon: <FaNode />, level: "Intermedio", brandColor: "#339933" },
       { name: "Figma", icon: <SiFigma />, level: "Intermedio", brandColor: "#F24E1E" },
+    ],
+  },
+  {
+    category: "Plataformas",
+    skills: [
+      { name: "GitHub", icon: <FaGithub />, level: "Avanzado", brandColor: "#ffffff" },
+      { name: "GitLab", icon: <SiGitlab />, level: "Intermedio", brandColor: "#FC6D26" },
+      { name: "Bitbucket", icon: <FaBitbucket />, level: "Intermedio", brandColor: "#0052CC" },
     ],
   },
 ];
@@ -76,18 +85,19 @@ interface SkillsPageProps {
 
 const SkillCard = ({ name, icon, level, brandColor, isDark }: Skill & { isDark: boolean }) => {
   const [hovered, setHovered] = useState(false);
+  const displayColor = (name === "GitHub" || name === "Linux") && !isDark ? "#111827" : brandColor;
 
   return (
     <div
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={hovered ? { borderColor: `${brandColor}55` } : undefined}
+      style={hovered ? { borderColor: `${displayColor}55` } : undefined}
       className={`flex flex-col items-center gap-2 border rounded-xl p-4 transition-all duration-300 cursor-default ${
         isDark ? "bg-[#0f0f23] border-gray-700/50" : "bg-white border-gray-200"
       }`}
     >
       <span
-        style={{ color: brandColor }}
+        style={{ color: displayColor }}
         className="text-3xl"
       >
         {icon}
