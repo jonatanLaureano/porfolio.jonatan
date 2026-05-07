@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { CiLinkedin } from "react-icons/ci";
 import { SlEnvolopeLetter } from "react-icons/sl";
@@ -86,8 +87,13 @@ const contactLinks: ContactLink[] = [
   },
 ];
 
-const ContactButton = ({ href, icon, label, brandColor, external }: ContactLink) => {
+interface HeroPageProps {
+  isDark: boolean;
+}
+
+const ContactButton = ({ href, icon, label, brandColor, external, isDark }: ContactLink & { isDark: boolean }) => {
   const [hovered, setHovered] = useState(false);
+  const displayColor = brandColor === "#ffffff" && !isDark ? "#111827" : brandColor;
 
   return (
     <a
@@ -95,23 +101,29 @@ const ContactButton = ({ href, icon, label, brandColor, external }: ContactLink)
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={hovered ? { borderColor: brandColor, color: brandColor } : undefined}
-      className="flex items-center gap-3 px-5 py-3 border border-gray-600 rounded-xl text-gray-400 hover:bg-white/5 transition-all duration-300 w-full sm:w-auto justify-center"
+      style={{
+        borderColor: hovered ? displayColor : (isDark ? "#4b5563" : "#d1d5db"),
+      }}
+      className={`flex items-center gap-3 px-5 py-3 border rounded-xl transition-all duration-300 w-full sm:w-auto justify-center ${
+        isDark
+          ? "hover:bg-white/5"
+          : "hover:bg-gray-100"
+      }`}
     >
       <span
-        style={{ color: hovered ? brandColor : undefined }}
-        className="text-2xl transition-colors duration-300 flex-shrink-0"
+        style={{ color: displayColor }}
+        className="text-2xl flex-shrink-0"
       >
         {icon}
       </span>
-      <span className="text-sm font-medium">{label}</span>
+      <span style={{ color: displayColor }} className="text-sm font-medium">{label}</span>
     </a>
   );
 };
 
-const HeroPage = () => {
+const HeroPage = ({ isDark }: HeroPageProps) => {
   return (
-    <section className="flex flex-col bg-[#0a0a1a] text-white overflow-hidden">
+    <section className={`flex flex-col overflow-hidden ${isDark ? "bg-[#0a0a1a] text-white" : "bg-gray-50 text-gray-800"}`}>
 
       <div className="min-h-screen flex flex-col items-center justify-center text-center px-6">
         <div className="flex flex-col items-center gap-4 max-w-3xl w-full">
@@ -120,7 +132,8 @@ const HeroPage = () => {
             <img
               src="/img/Student.jpg"
               alt="Foto de Jonatan Laureano"
-              className="w-24 h-24 rounded-full border-2 border-gray-500 object-cover"
+              className="w-24 h-24 rounded-full border-2 object-cover"
+              style={{ borderColor: isDark ? "#6b7280" : "#d1d5db" }}
             />
             <span className="px-3 py-1 text-sm bg-green-700 text-white rounded-full">
               Disponible para trabajar
@@ -128,29 +141,29 @@ const HeroPage = () => {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold leading-tight mt-2">
-            Hola, soy <span className="text-blue-400">Jonatan</span>
+            Hola, soy <span className="text-blue-500">Jonatan</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 leading-relaxed max-w-2xl">
+          <p className={`text-lg md:text-xl leading-relaxed max-w-2xl ${isDark ? "text-gray-300" : "text-gray-600"}`}>
             Frontend Developer especializado en{" "}
-            <span className="font-semibold text-white">Web Components con LitElement</span> y el{" "}
-            <span className="font-semibold text-white">Design System Cells</span> de{" "}
-            <span className="font-semibold text-blue-400">BBVA</span>, con más de{" "}
-            <span className="font-semibold text-white">1 año construyendo interfaces de banca digital en producción</span>.
+            <span className="font-semibold">Web Components con LitElement</span> y el{" "}
+            <span className="font-semibold">Design System Cells</span> de{" "}
+            <span className="font-semibold text-blue-500">BBVA</span>, con más de{" "}
+            <span className="font-semibold">1 año construyendo interfaces de banca digital en producción</span>.
             Bachiller en Ingeniería de Sistemas y actualmente especializándome en{" "}
-            <span className="font-semibold text-white">Arquitectura de Software</span> e{" "}
-            <span className="font-semibold text-white">Inteligencia Artificial generativa</span>.
+            <span className="font-semibold">Arquitectura de Software</span> e{" "}
+            <span className="font-semibold">Inteligencia Artificial generativa</span>.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center gap-3 mt-6">
             {contactLinks.map((link) => (
-              <ContactButton key={link.href} {...link} />
+              <ContactButton key={link.href} {...link} isDark={isDark} />
             ))}
           </div>
         </div>
       </div>
 
       <div className="max-w-4xl w-full mx-auto px-4 pb-20">
-        <h2 className="text-2xl font-bold flex items-center gap-2 text-white mb-8">
+        <h2 className="text-2xl font-bold flex items-center gap-2 mb-8">
           <FaBriefcase />
           Experiencia laboral
         </h2>
@@ -159,31 +172,36 @@ const HeroPage = () => {
           {experiences.map((exp) => (
             <div
               key={exp.id}
-              className="border-l-2 border-gray-700 pl-6 relative"
+              className="border-l-2 pl-6 relative"
+              style={{ borderColor: isDark ? "#374151" : "#d1d5db" }}
             >
-              <span className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 bg-blue-400 rounded-full" />
+              <span className="absolute -left-[5px] top-1.5 w-2.5 h-2. bg-blue-500 rounded-full" />
 
-              <h3 className="text-lg font-semibold text-blue-400">{exp.title}</h3>
-              <p className="text-gray-300 text-sm mt-0.5">{exp.company}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{exp.period}</p>
-              <p className="mt-3 text-gray-300 text-sm leading-relaxed text-justify">
+              <h3 className="text-lg font-semibold text-blue-500">{exp.title}</h3>
+              <p className={`text-sm mt-0.5 ${isDark ? "text-gray-300" : "text-gray-600"}`}>{exp.company}</p>
+              <p className={`text-xs mt-0.5 ${isDark ? "text-gray-500" : "text-gray-400"}`}>{exp.period}</p>
+              <p className={`mt-3 text-sm leading-relaxed text-justify ${isDark ? "text-gray-300" : "text-gray-600"}`}>
                 {exp.description}
               </p>
 
               {exp.projects.length > 0 && (
                 <div className="mt-4 flex flex-col gap-3">
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
+                  <p className="text-xs font-semibold uppercase tracking-widest" style={{ color: isDark ? "#9ca3af" : "#6b7280" }}>
                     Proyectos en BBVA
                   </p>
                   {exp.projects.map((proj) => (
                     <div
                       key={proj.name}
-                      className="bg-[#111127] border border-gray-700/50 rounded-lg px-4 py-3"
+                      className="border rounded-lg px-4 py-3"
+                      style={{
+                        backgroundColor: isDark ? "#111127" : "#f9fafb",
+                        borderColor: isDark ? "rgba(55, 65, 81, 0.5)" : "#e5e7eb"
+                      }}
                     >
-                      <p className="text-sm font-semibold text-white">
+                      <p className="text-sm font-semibold" style={{ color: isDark ? "#fff" : "#111" }}>
                         {proj.name}
                       </p>
-                      <p className="text-xs text-gray-400 mt-1 leading-relaxed">
+                      <p className="text-xs mt-1 leading-relaxed" style={{ color: isDark ? "#9ca3af" : "#6b7280" }}>
                         {proj.detail}
                       </p>
                     </div>

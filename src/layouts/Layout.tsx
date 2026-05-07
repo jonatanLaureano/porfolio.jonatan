@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import AboutPage from "../pages/AboutPage";
@@ -6,27 +7,29 @@ import ProjectsPage from "../pages/ProjectsPage";
 import SkillsPage from "../pages/SkillsPage";
 
 const Layout = () => {
+  const [isDark, setIsDark] = useState(true);
+
   return (
-    <div className="font-sans bg-[#0a0a1a]">
-      <Navbar />
+    <div className={`font-sans pt-16 md:pt-20 ${isDark ? "bg-[#0a0a1a]" : "bg-gray-50"}`}>
+      <Navbar isDark={isDark} toggleTheme={() => setIsDark(!isDark)} />
 
       <section id="experience">
-        <HeroPage />
+        <HeroPage isDark={isDark} />
       </section>
 
       <section id="skills">
-        <SkillsPage />
+        <SkillsPage isDark={isDark} />
       </section>
 
       <section id="projects">
-        <ProjectsPage />
+        <ProjectsPage isDark={isDark} />
       </section>
 
       <section id="about">
-        <AboutPage />
+        <AboutPage isDark={isDark} />
       </section>
 
-      <Footer />
+      <Footer isDark={isDark} />
     </div>
   );
 };

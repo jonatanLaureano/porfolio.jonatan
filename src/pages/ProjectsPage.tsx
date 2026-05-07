@@ -20,9 +20,9 @@ interface Project {
 }
 
 const techConfig: Record<string, TechConfig> = {
-  React: { color: "bg-blue-500/20 text-blue-300 border-blue-500/30", icon: <FaReact /> },
-  "Tailwind CSS": { color: "bg-teal-500/20 text-teal-300 border-teal-500/30", icon: <SiTailwindcss /> },
-  TypeScript: { color: "bg-blue-800/30 text-blue-200 border-blue-700/40", icon: <SiTypescript /> },
+  React: { color: "#61DAFB", icon: <FaReact /> },
+  "Tailwind CSS": { color: "#06B6D4", icon: <SiTailwindcss /> },
+  TypeScript: { color: "#3178C6", icon: <SiTypescript /> },
 };
 
 const projects: Project[] = [
@@ -52,30 +52,38 @@ const TechBadge = ({ tech }: { tech: string }) => {
   const config = techConfig[tech];
   return (
     <span
-      className={`px-2.5 py-1 text-xs font-medium flex items-center gap-1.5 rounded-md border ${config?.color ?? "bg-gray-700/40 text-gray-300 border-gray-600/40"
-        }`}
+      className="px-2.5 py-1 text-xs font-medium flex items-center gap-1.5 rounded-md border bg-white/10"
+      style={{ borderColor: config?.color, color: config?.color }}
     >
-      {config?.icon ?? "🔧"} {tech}
+      <span style={{ color: config?.color }}>{config?.icon ?? "🔧"}</span> {tech}
     </span>
   );
 };
 
-const ProjectsPage = () => {
+interface ProjectsPageProps {
+  isDark: boolean;
+}
+
+const ProjectsPage = ({ isDark }: ProjectsPageProps) => {
   return (
     <section
       id="projects"
-      className="py-16 text-white bg-[#0a0a1a] overflow-hidden"
+      className={`py-16 overflow-hidden ${isDark ? "text-white bg-[#0a0a1a]" : "text-gray-800 bg-white"}`}
     >
       <div className="max-w-5xl w-full mx-auto px-4">
         <h2 className="text-3xl font-bold mb-10 flex items-center gap-2">
-          <FaCode className="text-blue-400" /> Proyectos
+          <FaCode className="text-blue-500" /> Proyectos
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project) => (
             <div
               key={project.id}
-              className="bg-[#0f0f23] border border-gray-700/50 rounded-2xl overflow-hidden flex flex-col hover:border-blue-500/40 transition-all duration-300 hover:shadow-lg hover:shadow-blue-900/20 group"
+              className={`border rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg group ${
+                isDark
+                  ? "bg-[#0f0f23] border-gray-700/50 hover:border-blue-500/40 hover:shadow-blue-900/20"
+                  : "bg-white border-gray-200 hover:border-blue-400 hover:shadow-blue-200/30"
+              }`}
             >
               <div className="relative overflow-hidden h-52">
                 <img
@@ -83,14 +91,16 @@ const ProjectsPage = () => {
                   alt={project.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f23] via-transparent to-transparent" />
+                <div className={`absolute inset-0 bg-gradient-to-t ${
+                  isDark ? "from-[#0f0f23]" : "from-white"
+                } via-transparent to-transparent`} />
               </div>
 
               <div className="flex flex-col flex-1 p-6">
-                <h3 className="text-lg font-bold text-white leading-snug">
+                <h3 className="text-lg font-bold leading-snug" style={{ color: isDark ? "#fff" : "#111" }}>
                   {project.title}
                 </h3>
-                <p className="text-gray-400 text-sm mt-2 leading-relaxed flex-1">
+                <p className={`text-sm mt-2 leading-relaxed flex-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
                   {project.description}
                 </p>
 
@@ -106,16 +116,22 @@ const ProjectsPage = () => {
                       href={project.codeLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 bg-gray-700/60 border border-gray-600/50 rounded-lg text-sm hover:bg-gray-600/60 transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm transition-colors"
+                      style={{
+                        borderColor: isDark ? "#6b7280" : "#d1d5db",
+                        color: isDark ? "#fff" : "#374151",
+                        backgroundColor: isDark ? "rgba(55, 65, 81, 0.6)" : "#f3f4f4",
+                      }}
                     >
-                      <FaGithub /> Código
+                      <FaGithub style={{ color: isDark ? "#fff" : "#24292f" }} /> Código
                     </a>
                   )}
                   <a
                     href={project.previewLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600/90 rounded-lg text-sm hover:bg-blue-500 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors text-white"
+                    style={{ backgroundColor: "#2563eb" }}
                   >
                     <MdOutlinePreview /> Vista previa
                   </a>
