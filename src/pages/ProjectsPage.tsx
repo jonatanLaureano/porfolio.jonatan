@@ -53,9 +53,7 @@ export default function ProjectsPage() {
                       <i />
                       <i />
                       <span>
-                        {project.id === "sgi"
-                          ? "Sistema de Gestión de Inventario"
-                          : "Arena FreeStyle"}
+                        {project.title}
                       </span>
                     </div>
                     <img

@@ -47,4 +47,21 @@ export const projects: Project[] = [
     codeLink: "https://github.com/jonatanLaureano/TicketFlow",
     previewLink: "https://furia-plumada-frontend.vercel.app/",
   },
+  {
+    id: "siom-mineria",
+    title: "SIOM Minería",
+    description:
+      "Interfaz web de acceso para SIOM Minería, desarrollada con React JS y CSS.",
+    image: {
+      src: "/img/siom-mineria-1200.webp",
+      srcSet:
+        "/img/siom-mineria-640.webp 640w, /img/siom-mineria-1200.webp 1200w",
+      width: 1200,
+      height: 571,
+      category: "Aplicación web · Sector minero",
+    },
+    tech: ["React JS", "CSS"],
+    codeLink: "https://github.com/jonatanLaureano/proyecto-siom",
+    previewLink: "https://proyecto-siom.vercel.app/login",
+  },
 ];
