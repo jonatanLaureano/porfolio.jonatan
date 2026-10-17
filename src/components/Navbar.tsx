@@ -1,82 +1,170 @@
-import { useState } from "react";
-import { FaMoon, FaSun, FaBars, FaTimes } from "react-icons/fa";
-
+import { useEffect, useRef, useState } from "react";
+import { profile } from "../data/profile";
+import { FiArrowUpRight, FiMenu, FiMoon, FiSun, FiX } from "react-icons/fi";
 interface NavbarProps {
   isDark: boolean;
   toggleTheme: () => void;
 }
-
 const navItems = [
-  { href: "#experience", label: "Experiencia" },
-  { href: "#skills", label: "Skills" },
-  { href: "#projects", label: "Proyectos" },
-  { href: "#about", label: "Sobre mí" },
+  { id: "projects", label: "Proyectos" },
+  { id: "experience", label: "Experiencia" },
+  { id: "skills", label: "Tecnologías" },
+  { id: "about", label: "Sobre mí" },
+  { id: "education", label: "Formación" },
 ];
-
-const Navbar = ({ isDark, toggleTheme }: NavbarProps) => {
+export default function Navbar({ isDark, toggleTheme }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const linkClass = isDark
-    ? "text-gray-400 hover:text-blue-400"
-    : "text-gray-600 hover:text-blue-600";
-
+  const [active, setActive] = useState("");
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const header = useRef<HTMLElement>(null);
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      const ids = ["home", ...navItems.map((item) => item.id), "contact"];
+      const visible = ids.filter(
+        (id) =>
+          (document.getElementById(id)?.getBoundingClientRect().top ??
+            Infinity) <= 180
+      );
+      setActive(visible[visible.length - 1] ?? "home");
+      frame = 0;
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        menuButton.current?.focus();
+      }
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (!header.current?.contains(event.target as Node)) setMenuOpen(false);
+    };
+    const media = window.matchMedia("(min-width: 900px)");
+    const onResize = () => {
+      if (media.matches) setMenuOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    media.addEventListener("change", onResize);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+      media.removeEventListener("change", onResize);
+    };
+  }, [menuOpen]);
+  function navigate(id: string) {
+    setMenuOpen(false);
+    setActive(id);
+    requestAnimationFrame(() =>
+      document.getElementById(id)?.focus({ preventScroll: true })
+    );
+  }
   return (
-    <nav
-      className={`fixed top-0 w-full backdrop-blur-md py-4 px-4 md:py-5 md:px-8 shadow-md z-50 ${
-        isDark ? "bg-[#0a0a1a]/90 text-white" : "bg-white/90 text-gray-800"
-      }`}
-      aria-label="Navegación principal"
+    <header
+      className="site-header"
+      ref={header}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null))
+          setMenuOpen(false);
+      }}
     >
-      <div className="flex justify-between items-center max-w-6xl mx-auto">
-        <ul className={`hidden md:flex gap-10 text-base font-medium absolute left-1/2 transform -translate-x-1/2`}>
-          {navItems.map(({ href, label }) => (
-            <li key={href}>
-              <a href={href} className={`${linkClass} transition-colors duration-200`}>
-                {label}
-              </a>
-            </li>
+      <nav className="container nav-bar" aria-label="Navegación principal">
+        <a
+          href="#home"
+          className="wordmark"
+          aria-label="Jonatan Laureano, inicio"
+          onClick={() => navigate("home")}
+        >
+          <span className="monogram" aria-hidden="true">
+            jl<span>.</span>
+          </span>
+          <span className="wordmark-name">
+            {profile.name}
+            <span>{profile.role}</span>
+          </span>
+        </a>
+        <div className="desktop-navigation">
+          {navItems.map(({ id, label }) => (
+            <a
+              key={id}
+              href={"#" + id}
+              aria-current={active === id ? "location" : undefined}
+              onClick={() => navigate(id)}
+            >
+              {label}
+            </a>
           ))}
-        </ul>
-
-        <button
-          className="md:hidden p-2"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-        >
-          {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-        </button>
-
-        <button
-          onClick={toggleTheme}
-          className={`p-2 rounded-full transition-all duration-300 ${
-            isDark
-              ? "bg-gray-700 hover:bg-gray-600 text-yellow-400"
-              : "bg-gray-200 hover:bg-gray-300 text-gray-700"
-          }`}
-          aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
-        >
-          {isDark ? <FaMoon size={20} /> : <FaSun size={20} />}
-        </button>
-      </div>
-
-      {menuOpen && (
-        <div className={`md:hidden mt-4 pb-4 ${isDark ? "bg-[#0a0a1a]" : "bg-white"}`}>
-          <ul className="flex flex-col items-center gap-4 text-base font-medium">
-            {navItems.map(({ href, label }) => (
-              <li key={href}>
-                <a
-                  href={href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`${linkClass} transition-colors duration-200`}
-                >
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
-      )}
-    </nav>
+        <div className="nav-actions">
+          <button
+            type="button"
+            className="icon-button"
+            onClick={toggleTheme}
+            aria-label={
+              isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"
+            }
+          >
+            {isDark ? (
+              <FiSun aria-hidden="true" />
+            ) : (
+              <FiMoon aria-hidden="true" />
+            )}
+          </button>
+          <a
+            className="nav-contact"
+            href="#contact"
+            onClick={() => navigate("contact")}
+          >
+            Hablemos <FiArrowUpRight aria-hidden="true" />
+          </a>
+          <button
+            type="button"
+            ref={menuButton}
+            className="icon-button menu-toggle"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+          >
+            {menuOpen ? (
+              <FiX aria-hidden="true" />
+            ) : (
+              <FiMenu aria-hidden="true" />
+            )}
+          </button>
+        </div>
+        <div
+          id="mobile-navigation"
+          className="mobile-navigation"
+          hidden={!menuOpen}
+        >
+          {navItems.map(({ id, label }) => (
+            <a
+              key={id}
+              href={"#" + id}
+              aria-current={active === id ? "location" : undefined}
+              onClick={() => navigate(id)}
+            >
+              {label}
+              <FiArrowUpRight aria-hidden="true" />
+            </a>
+          ))}
+          <a href="#contact" onClick={() => navigate("contact")}>
+            Hablemos <FiArrowUpRight aria-hidden="true" />
+          </a>
+        </div>
+      </nav>
+    </header>
   );
-};
-
-export default Navbar;
+}

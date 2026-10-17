@@ -1,148 +1,124 @@
-import { FaCode, FaGithub } from "react-icons/fa";
-import { MdOutlinePreview } from "react-icons/md";
-import { FaReact } from "react-icons/fa";
-import { SiTypescript, SiTailwindcss } from "react-icons/si";
-import type { JSX } from "react";
+import { FiArrowUpRight, FiGithub } from "react-icons/fi";
+import SectionHeading from "../components/SectionHeading";
+import { projects } from "../data/projects";
+import { profile } from "../data/profile";
 
-interface TechConfig {
-  color: string;
-  icon: JSX.Element;
-}
-
-interface Project {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  tech: string[];
-  codeLink?: string;
-  previewLink: string;
-}
-
-const techConfig: Record<string, TechConfig> = {
-  React: { color: "#61DAFB", icon: <FaReact /> },
-  "Tailwind CSS": { color: "#06B6D4", icon: <SiTailwindcss /> },
-  TypeScript: { color: "#3178C6", icon: <SiTypescript /> },
-};
-
-const projects: Project[] = [
-  {
-    id: "sgi",
-    title: "Sistema de Gestión de Inventario",
-    description:
-      "Aplicación React para administrar eficientemente el stock de productos. Incluye dashboard de métricas, CRUD completo y filtros avanzados. Diseñado en Figma e implementado con TypeScript y TailwindCSS.",
-    image: "/img/Proyecto2.PNG",
-    tech: ["React", "Tailwind CSS", "TypeScript"],
-    codeLink: "https://github.com/jonatanLaureano/SGI-FRONTEND-SA",
-    previewLink: "https://sgi-frontend-sa.vercel.app/",
-  },
-  {
-    id: "arena",
-    title: "Arena FreeStyle — Plataforma de Venta de Tickets",
-    description:
-      "Plataforma moderna para la gestión y venta de tickets de eventos. Diseño responsivo con React, TypeScript y TailwindCSS. Arquitectura escalable con separación de responsabilidades y consumo de APIs.",
-    image: "/img/Proyecto1.PNG",
-    tech: ["React", "Tailwind CSS", "TypeScript"],
-    codeLink: "https://github.com/jonatanLaureano/TicketFlow",
-    previewLink: "https://furia-plumada-frontend.vercel.app/",
-  },
-];
-
-const TechBadge = ({ tech }: { tech: string }) => {
-  const config = techConfig[tech];
-  return (
-    <span
-      className="px-2.5 py-1 text-xs font-medium flex items-center gap-1.5 rounded-md border bg-white/10"
-      style={{ borderColor: config?.color, color: config?.color }}
-    >
-      <span style={{ color: config?.color }}>{config?.icon ?? "🔧"}</span> {tech}
-    </span>
-  );
-};
-
-interface ProjectsPageProps {
-  isDark: boolean;
-}
-
-const ProjectsPage = ({ isDark }: ProjectsPageProps) => {
+export default function ProjectsPage() {
   return (
     <section
       id="projects"
-      className={`py-16 overflow-hidden ${isDark ? "text-white bg-[#0a0a1a]" : "text-gray-800 bg-white"}`}
+      className="section projects-section"
+      tabIndex={-1}
+      aria-labelledby="projects-title"
     >
-      <div className="max-w-5xl w-full mx-auto px-4">
-        <h2 className="text-3xl font-bold mb-10 flex items-center gap-2">
-          <FaCode className="text-blue-500" /> Proyectos
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              className={`border rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg group ${
-                isDark
-                  ? "bg-[#0f0f23] border-gray-700/50 hover:border-blue-500/40 hover:shadow-blue-900/20"
-                  : "bg-white border-gray-200 hover:border-blue-400 hover:shadow-blue-200/30"
-              }`}
-            >
-              <div className="relative overflow-hidden h-52">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className={`absolute inset-0 bg-gradient-to-t ${
-                  isDark ? "from-[#0f0f23]" : "from-white"
-                } via-transparent to-transparent`} />
-              </div>
-
-              <div className="flex flex-col flex-1 p-6">
-                <h3 className="text-lg font-bold leading-snug" style={{ color: isDark ? "#fff" : "#111" }}>
-                  {project.title}
-                </h3>
-                <p className={`text-sm mt-2 leading-relaxed flex-1 ${isDark ? "text-gray-400" : "text-gray-600"}`}>
-                  {project.description}
-                </p>
-
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {project.tech.map((tech) => (
-                    <TechBadge key={tech} tech={tech} />
-                  ))}
-                </div>
-
-                <div className="mt-5 flex gap-3">
-                  {project.codeLink && (
+      <div className="container">
+        <div className="section-header-row">
+          <SectionHeading
+            id="projects-title"
+            number="01"
+            eyebrow="Una muestra de mi trabajo"
+            title="Ideas llevadas a la pantalla."
+            description="Proyectos donde el diseño, los componentes y la lógica se encuentran."
+          />
+          <a
+            className="text-link section-side-link"
+            href={profile.github}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Explorar GitHub <FiArrowUpRight aria-hidden="true" />
+            <span className="sr-only">(abre en otra pestaña)</span>
+          </a>
+        </div>
+        <div className="projects-grid">
+          {projects.map((project, index) => {
+            const visual = project.image;
+            return (
+              <article className="project-card" key={project.id}>
+                <a
+                  className={"project-visual project-visual-" + project.id}
+                  href={project.previewLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={
+                    "Ver demo de " + project.title + " (abre en otra pestaña)"
+                  }
+                >
+                  <span className="project-number" aria-hidden="true">
+                    0{index + 1}
+                  </span>
+                  <div className="browser-frame">
+                    <div className="browser-toolbar" aria-hidden="true">
+                      <i />
+                      <i />
+                      <i />
+                      <span>
+                        {project.id === "sgi"
+                          ? "Sistema de Gestión de Inventario"
+                          : "Arena FreeStyle"}
+                      </span>
+                    </div>
+                    <img
+                      src={visual.src}
+                      srcSet={visual.srcSet}
+                      sizes="(min-width: 1200px) 480px, (min-width: 650px) 42vw, 88vw"
+                      alt={"Interfaz de " + project.title}
+                      width={visual.width}
+                      height={visual.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <span className="project-open" aria-hidden="true">
+                    <FiArrowUpRight />
+                  </span>
+                </a>
+                <div className="project-body">
+                  <p className="project-category">{visual.category}</p>
+                  <h3>{project.title}</h3>
+                  <p className="project-description">{project.description}</p>
+                  <ul
+                    className="tech-tags"
+                    aria-label="Tecnologías del proyecto"
+                  >
+                    {project.tech.map((tech) => (
+                      <li key={tech}>{tech}</li>
+                    ))}
+                  </ul>
+                  <div className="project-actions">
                     <a
-                      href={project.codeLink}
+                      className="text-link"
+                      href={project.previewLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 border rounded-lg text-sm transition-colors"
-                      style={{
-                        borderColor: isDark ? "#6b7280" : "#d1d5db",
-                        color: isDark ? "#fff" : "#374151",
-                        backgroundColor: isDark ? "rgba(55, 65, 81, 0.6)" : "#f3f4f4",
-                      }}
                     >
-                      <FaGithub style={{ color: isDark ? "#fff" : "#24292f" }} /> Código
+                      Ver demo <FiArrowUpRight aria-hidden="true" />
+                      <span className="sr-only">
+                        {" "}
+                        de {project.title} (abre en otra pestaña)
+                      </span>
                     </a>
-                  )}
-                  <a
-                    href={project.previewLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors text-white"
-                    style={{ backgroundColor: "#2563eb" }}
-                  >
-                    <MdOutlinePreview /> Vista previa
-                  </a>
+                    {project.codeLink && (
+                      <a
+                        className="text-link muted-link"
+                        href={project.codeLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <FiGithub aria-hidden="true" /> Código
+                        <span className="sr-only">
+                          {" "}
+                          de {project.title} (abre en otra pestaña)
+                        </span>
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>
   );
-};
-
-export default ProjectsPage;
+}
